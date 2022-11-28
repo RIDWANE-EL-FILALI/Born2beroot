@@ -178,6 +178,21 @@ ssh <username>@<ip-address> -p 4242
 1 - logout
 2 - exit
 ```
+## Connecting SSH server
+* Go to VirtualBox-> Choose the VM->Select Settings
+* Choose “Network”-> “Adapter 1"->”Advanced”->”Port Forwarding”
+<p align="center">
+<img src="https://github.com/RIDWANE-EL-FILALI/Born2beroot/blob/master/sources/1_rCj_FeuZ5Rm2abz48qhulg.png" align="center" width="888" hight="443"/>
+</p>
+<p align="center">
+<img src="https://github.com/RIDWANE-EL-FILALI/Born2beroot/blob/master/sources/1_61-KSUCFcerO1wPqBcYISg.png" align="center" width="888" hight="443"/>
+</p>
+* Restart SSH server (go to the your VM machine)
+
+```
+sudo systemctl restart ssh
+```
+
 ## UFW
 ### installing && configuration of ufw
 * installing ufw
