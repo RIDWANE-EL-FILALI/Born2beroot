@@ -93,3 +93,250 @@ There are three different techniques that SSH uses to encrypt:
   ```
   getent group sudo
   ```
+  getent is a Linux command that helps the user to get the entries in a number of important text files called databases. This includes the passwd and the group of databases which stores the user information. Hence getent is a common way to look up in user details on Linux. Since getent uses the same name of service as the system, getent will be going to show all information, including that gained from the network information sources such as LDAP. The databases it usually searches in are: ahosts, ahostsv4, ahostsv6, aliases, ethers (Ethernet addresses), group, gshadow, hosts, netgroup, networks, passwd, protocols, rpc, services, and shadow.
+  * Give privilege as su :
+  ```
+  $ sudo visudo
+  ```
+  * add this line in th file :
+  ```
+  <username> ALL=(ALL) ALL
+  THE USER CAN USE ALL COMMANDS WITH SUDO BEING ANY USER
+  ```
+  ### running some commands :
+  * apt update downloads package information from all configured sources (i.e. the sources configured inside /etc/apt/sources.list). This is how your system knows which packages are available for upgrade, and where to retrieve that software.
+  ```
+  sudo apt update
+  ```
+  * apt upgrade can then act on this information and upgrade all installed packages to their latest versions. This command will only upgrade packages that are already installed; it won’t install new packages unless they are required for resolving dependencies. apt upgrade also won’t remove any packages. If a package must be removed to complete an upgrade, the command will simply skip that upgrade and leave your current packages intact.
+  ```
+  sudo apt upgrade
+  ```
+  ### configuring sudo :
+  * configuring sudo in ```/etc/sudoers```
+  ```
+  $ sudo vim /etc/sudoers
+  ```
+  * limit authentication using sudo to 3 tries :
+  ```
+  Defaults        passwd_tries=3
+  ```
+  * to add a message of your choice add :
+  ```
+  Defaults        badpass_message=" YOU SUCK ! , TRY AGAIN"
+  ```
+  * to log all sudo commands to :
+  ```
+  Defaults        logfile="/var/log/sudo/sudo.log"
+  Defaults        log_input,log_output
+  ```
+  * to require TTY :
+  If set, sudo will only run when the user is logged in to a real tty. When this flag is set, sudo can only be run from a login session and not via other means such as cron(8) or cgi-bin scripts. This flag is off by default.
+  ```
+  Defaults        requiretty
+  ```
+  * set sudo paths to: for security reasons
+  ```
+   Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+  ```
+## SSH
+### installing ssh 
+* install ssh server :
+```
+sudo apt install openssh-server
+```
+### configuring ssh 
+* edit the configuration file
+```
+sudo vim /etc/ssh/sshd_config
+```
+* uncomment and change the port rule
+```
+#Port 22 ====> Port 4242
+```
+* disable ssh login as root
+```
+#PermitRootLogin prohibit-password   =====>   PermitRootLogin no
+```
+* check ssh status 
+```
+1 - sudo service status ssh
+2 - systemctl ssh status
+```
+* restart the ssh service
+```
+systemctl restart sshd
+```
+ssh[d] the d stands for deamons and its services that run on the background with no user interaction
+
+* connecting to a server using
+```
+ssh <username>@<ip-address> -p 4242
+```
+* terminate the session
+```
+1 - logout
+2 - exit
+```
+## UFW
+### installing && configuration of ufw
+* installing ufw
+```
+sudo apt install ufw
+```
+☠️ be carefull if you are configuring over ssh, you may wish to allow ssh before enabling the firewall. if you connection gets interrupted before allowing ssh you may be locked out of the system.
+* enable ufw
+```
+sudo ufw enable
+```
+* set the defaults 
+```
+ufw default deny incoming
+ufw default allow outgoing
+```
+* allow incoming connections using Port 4242
+```
+sudo ufw allow 4242/tcp
+```
+* check ufw status
+```
+sudo ufw status
+```
+* check ufw status with numberd rules for better comtrol
+```
+sudo ufw status numbered
+```
+* delete a rule
+```
+ufw delete [number of the rule]
+```
+
+## user management
+### the password policy
+* enter the configuration file 
+```
+sudo vim /etc/login.defs
+```
+* configuring password age policy
+```
+PASS_MAX_DAYS  99999  =====>   30
+PASS_MIN_DAYS  0      =====>   2
+PASS_WAN_AGE   7      =====>   7
+
+#  PASS_MAX_DAYS	Maximum number of days a password may be used.
+#	PASS_MIN_DAYS	Minimum number of days allowed between password changes.
+#	PASS_WARN_AGE	Number of days warning given before a password expires.
+```
+* for the already existing users(<username42> && root)
+```
+sudo chage -M 30 <username>
+sudo chage -m 2  <username>
+sudo chage -W 7  <username>
+```
+chage - change user password expiry information
+* check password expiry date for user
+```
+chage -l <username>
+```
+### password strengh
+* Install password quality verification library:
+```
+sudo apt install libpam-pwquality
+```
+* check the macros for password strenght policy 
+```
+cat /etc/security/pwquality.conf
+```
+* configure password strenght 
+```
+sudo vim /etc/pam.d/common-pawwsord
+```
+* require minimum lenght of the password
+```
+minlen=10
+```
+* require at least an uppercase and a numeric character
+```
+ucredit=-1  dcredit=-1
+```
+* to set a maximum of 3 consecutive identical characters
+```
+maxrepeat=3
+```
+* to reject the password if it contains <username> in some form
+```
+reject_username
+```
+* to set the number of changes required in the new password from the old password to 7
+```
+difok=7
+```   
+* To implement the same policy on root
+```
+enforce_for_root
+```
+### change the password
+```
+passwd <username>
+```
+## creating a new user & groups
+```
+sudo adduser <username> ---> create new user
+getent passwd <username> ---> check if the user was successfully created
+sudo userdel <username> --->delete a user
+
+   
+sudo groupadd <groupname>   ---->  create new group
+sudo adduser <username> <groupname>   ---->  add a user to a group
+sudo usermod -aG <groupname> <username>  ----^
+getent group <groupname>  --->  check group users
+sudo groupdel <username> --->delete a group
+```
+## cron
+* configure cron as root
+```
+sudo crontab -u root -e
+```
+* to schedule a shell script to run every 10 minutes
+```
+*/10 * * * * bash /path/script
+```
+* check cron scheduled jobs for a user
+```
+sudo crontab -u root -l
+```
+---
+# Monitoring
+   you'll create a script in bash, At server startup, the script will display some information (listed below) on all ter- minals every 10 minutes (take a look at wall). The banner is optional. No error must be visible. Your script must always be able to display the following information:
+* The architecture of your operating system and its kernel version.
+* The number of physical processors.
+* The number of virtual processors.
+* The current available RAM on your server and its utilization rate as a percentage.
+* The current available memory on your server and its utilization rate as a percentage.
+* The current utilization rate of your processors as a percentage.
+* The date and time of the last reboot.
+* Whether LVM is active or not.
+* The number of active connections.
+* The number of users using the server.
+* The IPv4 address of your server and its MAC (Media Access Control) address.
+* The number of commands executed with the sudo program.
+   
+[check mine here](https://github.com/RIDWANE-EL-FILALI/Born2beroot/blob/master/monitoring.sh)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
