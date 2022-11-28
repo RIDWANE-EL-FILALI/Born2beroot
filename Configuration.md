@@ -293,6 +293,10 @@ getent group <groupname>  --->  check group users
 sudo groupdel <username> --->delete a group
 ```
 ## cron
+* check how to use it 
+```
+cat /ect/crontab
+```
 * configure cron as root
 ```
 sudo crontab -u root -e
@@ -304,6 +308,23 @@ sudo crontab -u root -e
 * check cron scheduled jobs for a user
 ```
 sudo crontab -u root -l
+```
+* open sudoers file
+```
+sudo visudo
+```
+* add this line
+```
+<username> ALL=(ALL) NOPASSWD: usr/local/bin/monitoring.sh
+```
+## hostname
+* Check current hostname
+```
+hostnamectl
+```
+* change the hostname
+```
+hostnamectl set-hostname new_hostname
 ```
 ---
 # Monitoring
@@ -322,8 +343,39 @@ sudo crontab -u root -l
 * The number of commands executed with the sudo program.
    
 [check mine here](https://github.com/RIDWANE-EL-FILALI/Born2beroot/blob/master/monitoring.sh)
+ 
+# submission and peer-evaluation
+To get the signature, you first have to open the default installation folder (it is the folder where your VMs are saved):
 
+* Windows: %HOMEDRIVE%%HOMEPATH%\VirtualBox VMs\
+* Linux: ~/VirtualBox VMs/
+* MacM1: ~/Library/Containers/com.utmapp.UTM/Data/Documents/
+* MacOS: ~/VirtualBox VMs/
+   
+Then, retrieve the signature from the ".vdi" file (or ".qcow2 for UTM’users) of your virtual machine in sha1 * format. Below are 4 command examples for a centos_serv.vdi file:
 
+* Windows: certUtil -hashfile centos_serv.vdi sha1
+* Linux: sha1sum centos_serv.vdi
+* For Mac M1: shasum Centos.utm/Images/disk-0.qcow2
+* MacOS: shasum centos_serv.vdi This is an example of what kind of output you will get:
+6e657c4619944be17df3c31faa030c25e43e40af
+
+# take a snapshot of your machine 
+With snapshots, you can save a particular state of a virtual machine for later use. At any later time, you can revert to that state, even though you may have changed the VM considerably since then. A snapshot of a virtual machine is thus similar to a machine in Saved state, but there can be many of them, and these saved states are preserved.
+
+To see the snapshots of a virtual machine, click on the machine name in VirtualBox Manager. Then click the List icon next to the machine name, and select Snapshots. Until you take a snapshot of the machine, the list of snapshots will be empty except for the Current State item, which represents the "now" point in the lifetime of the virtual machine.
+
+Restore a snapshot. In the list of snapshots, right-click on any snapshot you have taken and select Restore. By restoring a snapshot, you go back or forward in time. The current state of the machine is lost, and the machine is restored to the exact state it was in when the snapshot was taken.
+
+Think of a snapshot as a point in time that you have preserved. More formally, a snapshot consists of the following:
+
+The snapshot contains a complete copy of the VM settings, including the hardware configuration, so that when you restore a snapshot, the VM settings are restored as well. For example, if you changed the hard disk configuration or the VM's system settings, that change is undone when you restore the snapshot.
+The complete state of all the virtual disks attached to the machine is preserved. Going back to a snapshot means that all changes that had been made to the machine's disks, file by file and bit by bit, will be undone as well. Files that were since created will disappear, files that were deleted will be restored, changes to files will be reverted.
+<p align="center">
+<img src="https://github.com/RIDWANE-EL-FILALI/Born2beroot/blob/master/sources/144112142-125c6bb6-dea3-433b-8a55-bb073b84d872.png" align="center" width="888" hight="443"/>
+</p>
+   
+⛔ it is of course FORBIDDEN to turn in your virtual machine in your Git repository. During the defense, the signature of the signature.txt file will be compared with the one of your virtual machine. If the two of them are not identical, your grade will be 0.
 
 
 
