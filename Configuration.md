@@ -374,6 +374,8 @@ Then, retrieve the signature from the ".vdi" file (or ".qcow2 for UTM’users) o
 * For Mac M1: shasum Centos.utm/Images/disk-0.qcow2
 * MacOS: shasum centos_serv.vdi This is an example of what kind of output you will get:
 6e657c4619944be17df3c31faa030c25e43e40af
+   
+* check this [here](https://github.com/RIDWANE-EL-FILALI/Born2beroot/blob/master/peer-evaluation.txt)
 
 # take a snapshot of your machine 
 With snapshots, you can save a particular state of a virtual machine for later use. At any later time, you can revert to that state, even though you may have changed the VM considerably since then. A snapshot of a virtual machine is thus similar to a machine in Saved state, but there can be many of them, and these saved states are preserved.
