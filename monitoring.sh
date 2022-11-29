@@ -1,5 +1,5 @@
 #!/bin/bash
-********************************************COMMANTS*************************************************
+#********************************************COMMANTS*************************************************
 : '
 Make sure to install sysstat : sudo apt install sysstat
 Make sure to install bc : sudo apt install bc
@@ -31,7 +31,7 @@ jounalctl=journalctl may be used to query the contents of the systemd(1) journal
        If called without parameters, it will show the full contents of the journal, starting with the oldest entry collected
 
 '
-*******************************************************VARIABLES**********************************************************
+#*******************************************************VARIABLES**********************************************************
 arc=$(uname -a)   #print the systeme information
 pcpu=$(grep "physical id" /proc/cpuinfo | uniq | wc -l)
 fram=$(free --mega | awk 'NR==2 {print $2}')     #freeram
@@ -49,7 +49,7 @@ mac=$(ip address | grep link/ether | awk '{print $(NF -2)}')
 CMD=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
 
 
-*************************************************************************************
+#*************************************************************************************
 wall "
 	#Architecture: $arc
 	#CPU physical: $pcpu
@@ -65,4 +65,4 @@ wall "
 	#Sudo: $CMD cmd"
 
 
-*************************************************************************************
+#*************************************************************************************
