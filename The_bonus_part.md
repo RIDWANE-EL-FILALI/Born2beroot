@@ -1,5 +1,5 @@
 # KNOWLEDGE
-## lighttpd
+## ->lighttpd
 Web servers are software or hardware (or both together) that stores and delivers content to a web browser at a basic level. The servers communicate with browsers using Hypertext Transfer Protocol (HTTP). Web servers can also support SMTP (Simple Mail Transfer Protocol) and FTP (File Transfer Protocol). 
 Web servers are also used for hosting websites and data for web applications. They can host single websites and multiple websites using virtualization.
 <p align="center">
