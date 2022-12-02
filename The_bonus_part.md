@@ -93,10 +93,59 @@ Exit the MariaDB shell
 MariaDB [(none)]> exit
 ```
 
-
-
-
-
+### installing php
+installing php-cgi && php-mysql
+```
+sudo apt install php-cgi php-mysql
+```
+###  Downloading && Configuring WordPress
+Download WordPress to /var/www/html
+```
+sudo wget http://wordpress.org/latest.tar.gz -P /var/www/html
+```
+Extract downloaded content
+```
+sudo tar -xzvf /var/www/html/latest.tar.gz
+```
+Remove tarball
+```
+sudo rm /var/www/html/latest.tar.gz
+```
+Copy content of /var/www/html/wordpress to /var/www/html
+```
+sudo cp -r /var/www/html/wordpress/* /var/www/html
+```
+Remove /var/www/html/wordpress
+```
+sudo rm -rf /var/www/html/wordpress
+```
+Create WordPress configuration file from its sample
+```
+sudo cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+```
+Configure WordPress to reference previously-created MariaDB database & user via 
+```
+sudo vi /var/www/html/wp-config.php
+```
+Replace the below
+```
+23 define( 'DB_NAME', 'database_name_here' );^M
+26 define( 'DB_USER', 'username_here' );^M
+29 define( 'DB_PASSWORD', 'password_here' );^M
+```
+with:
+```
+23 define( 'DB_NAME', '<database-name>' );^M
+26 define( 'DB_USER', '<username-2>' );^M
+29 define( 'DB_PASSWORD', '<password-2>' );^M
+```
+### Configuring Lighttpd
+Enable below modules via sudo lighty-enable-mod fastcgi; sudo lighty-enable-mod fastcgi-php; sudo service lighttpd force-reload.
+```
+ sudo lighty-enable-mod fastcgi
+ sudo lighty-enable-mod fastcgi-php
+ sudo service lighttpd force-reload
+```
 
 
 
