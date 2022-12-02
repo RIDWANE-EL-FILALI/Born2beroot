@@ -149,56 +149,55 @@ Enable below modules via sudo lighty-enable-mod fastcgi; sudo lighty-enable-mod 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## File Transfer Protocol (FTP)
+### Installing & Configuring FTP
+Install FTP via sudo apt install vsftpd.
+```
+sudo apt install vsftpd
+```
+Allow incoming connections using Port 21 via sudo ufw allow 21.
+```
+sudo ufw allow 21
+```
+Configure vsftpd via sudo vi /etc/vsftpd.conf.
+```
+sudo vi /etc/vsftpd.conf
+```
+To enable any form of FTP write command, uncomment below line:
+```
+31 #write_enable=YES
+```
+To set root folder for FTP-connected user to /home/<username>/ftp, add below lines:
+```
+sudo mkdir /home/<username>/ftp
+sudo mkdir /home/<username>/ftp/files
+sudo chown nobody:nogroup /home/<username>/ftp
+sudo chmod a-w /home/<username>/ftp
+<~~~>
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+<~~~>
+ ```
+To prevent user from accessing files or using commands outside the directory tree, uncomment below line:
+```
+114 #chroot_local_user=YES
+ ```
+To whitelist FTP, add below lines:
+```
+ sudo vi /etc/vsftpd.userlist
+ echo <username> | sudo tee -a /etc/vsftpd.userlist
+<~~~>
+userlist_enable=YES
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO
+<~~~>
+ ```
+### Connecting to Server via FTP
+FTP into your virtual machine via ftp <ip-address>.
+```
+ftp <ip-address>
+ ```
+Terminate FTP session at any time:
+ ```
+ CTRL + D
+ ```
