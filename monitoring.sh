@@ -34,6 +34,7 @@ jounalctl=journalctl may be used to query the contents of the systemd(1) journal
 #*******************************************************VARIABLES**********************************************************
 arc=$(uname -a)   #print the systeme information
 pcpu=$(grep "physical id" /proc/cpuinfo | uniq | wc -l)
+vcpu=$(grep "^processor" /proc/cpuinfo | wc -l)
 fram=$(free --mega | awk 'NR==2 {print $2}')     #freeram
 uram=$(free --mega | awk 'NR==2 {print $3}')     #usedram
 pram=$(free --mega | awk 'NR==2 {printf("%.2f"), $3/$2*100}')   #percentage of the used memory
