@@ -56,7 +56,7 @@ wall "
 	#CPU physical: $pcpu
 	#vCPU: $vcpu
 	#Memory Usage: $uram/${fram}MB ($pram%)
-	#Disk Usage: `expr $USED_MEMORY / 1024`/`expr $TOTAL_MEMORY / 1024`MB ($USED_MEMORY_PERCENT%%)`
+	#Disk Usage: `expr $USED_MEMORY / 1024`/`expr $TOTAL_MEMORY / 1024`MB ($USED_MEMORY_PERCENT%%)
 	#CPU load: $cpuload %
 	#Last boot: $lastboot
 	#LVM use: yes
