@@ -38,24 +38,24 @@ VCPU=$(grep "^processor" /proc/cpuinfo | wc -l)
 RAM=$(free --mega | awk 'NR==2 {print $2}')
 URAM=$(free --mega | awk 'NR==2 {print $3}')
 PRAM=$(free --mega | awk 'NR==2 {printf("%.2f", $3/$2*100)}')
-TOTAL_MEMORY=$(vmstat -s | awk 'NR==1 {print $1}')
-USED_MEMORY=$(vmstat -s | awk 'NR==2 {print $1}')
-USED_MEMORY_PERCENTAGE=$(expr $USED_MEMORY \* 100 / $TOTAL_MEMORY)
+TOTAL_MEMORY=$(df -Bg | grep '^/dev' | grep -v '/boot$' | awk '{ft += $2} END {print ft}')
+USED_MEMORY=$(df -Bm | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} END {print ut}')
+USED_MEMORY_PERCENTAGE=$(df -Bm | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} {ft+= $2} END {printf("%d"), ut/ft*100}')
 CPULOAD=$(echo 100 - $(mpstat | awk 'NR==4 {print $NF}') | bc)
 LASTBOOT=$(who -b | awk '{print $3,$4}')
-TCP=$(netstat -ant | grep "ESTABLISHDED" | wc -l)
+TCP=$(netstat -ant | grep "ESTABLISHED" | wc -l)
 ULOG=$(who | awk '{print $1}' | uniq | wc -l)
 IP=$(hostname -I)
 MAC=$(ip address | grep "link/ether" | awk '{print $2}')
-CMD=$(journactl _COMM=sudo | grep "COMMAND" | wc -l)
+CMD=$(journalctl -q _COMM=sudo | grep "COMMAND" | wc -l)
 
 wall "
 	#Architecture: $ARC
 	#CPU physical: $PCPU
-	#VCPU: #$VCPU
+	#VCPU: $VCPU
 	#Memory Usage: $URAM/$RAM MB ($PRAM%)
-	#Disk Usage: `expr $USED_MEMORY / 1024`/`expr $TOTAL_MEMORY / 1048576`GB ($USED_MEMORY_PERCENTAGE%)
-	#CPU load: $CPULOAD
+	#Disk Usage: $USED_MEMORY / $TOTAL_MEMORY GB ($USED_MEMORY_PERCENTAGE%)
+	#CPU load: 0$CPULOAD
 	#Last boot: $LASTBOOT
 	#LVM use: yes
 	#TCP CONNECTIONS: $TCP ESTABLISHED
