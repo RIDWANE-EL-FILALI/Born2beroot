@@ -32,38 +32,34 @@ jounalctl=journalctl may be used to query the contents of the systemd(1) journal
 
 '
 #*******************************************************VARIABLES**********************************************************
-arc=$(uname -a)   #print the systeme information
-pcpu=$(grep "physical id" /proc/cpuinfo | uniq | wc -l)
-vcpu=$(grep "^processor" /proc/cpuinfo | wc -l)
-fram=$(free --mega | awk 'NR==2 {print $2}')     #freeram
-uram=$(free --mega | awk 'NR==2 {print $3}')     #usedram
-pram=$(free --mega | awk 'NR==2 {printf("%.2f"), $3/$2*100}')   #percentage of the used memory
-TOTAL_MEMORY=$(vmstat -s | awk '{if(NR == 1) print$1}')
-USED_MEMORY=$(vmstat -s | awk 'NR==1 {print$1}')
-USED_MEMORY_PERCENT=$(expr $USED_MEMORY \* 100 / $TOTAL_MEMORY)
-cpuload=$(echo 100 - $(mpstat | awk 'NR==4 {print$NF}') | bc)
-lastboot=$(who -b | awk '{print$3,$4}')
-TCP=$(netstat -nat | grep 'ESTABLISHED' | wc -l)
-ULOG=$(users | wc -l)
+ARC=$(uname -a)
+PCPU=$(grep "physical id" /proc/cpuinfo | uniq | wc -l)
+VCPU=$(grep "^processor" /proc/cpuinfo | wc -l)
+RAM=$(free --mega | awk 'NR==2 {print $2}')
+URAM=$(free --mega | awk 'NR==2 {print $3}')
+PRAM=$(free --mega | awk 'NR==2 {printf("%.2f", $3/$2*100)}')
+TOTAL_MEMORY=$(vmstat -s | awk 'NR==1 {print $1}')
+USED_MEMORY=$(vmstat -s | awk 'NR==2 {print $1}')
+USED_MEMORY_PERCENTAGE=$(expr $USED_MEMORY \* 100 / $TOTAL_MEMORY)
+CPULOAD=$(echo 100 - $(mpstat | awk 'NR==4 {print $NF}') | bc)
+LASTBOOT=$(who -b | awk '{print $3,$4}')
+TCP=$(netstat -ant | grep "ESTABLISHDED" | wc -l)
+ULOG=$(who | awk '{print $1}' | uniq | wc -l)
 IP=$(hostname -I)
-mac=$(ip address | grep link/ether | awk '{print $(NF -2)}')
-CMD=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
+MAC=$(ip address | grep "link/ether" | awk '{print $2}')
+CMD=$(journactl _COMM=sudo | grep "COMMAND" | wc -l)
 
-
-#*************************************************************************************
 wall "
-	#Architecture: $arc
-	#CPU physical: $pcpu
-	#vCPU: $vcpu
-	#Memory Usage: $uram/${fram}MB ($pram%)
-	#Disk Usage: `expr $USED_MEMORY / 1024`/`expr $TOTAL_MEMORY / 1024`MB ($USED_MEMORY_PERCENT%%)
-	#CPU load: $cpuload %
-	#Last boot: $lastboot
+	#Architecture: $ARC
+	#CPU physical: $PCPU
+	#VCPU: #$VCPU
+	#Memory Usage: $URAM/$RAM MB ($PRAM%)
+	#Disk Usage: `expr $USED_MEMORY / 1048576`/`expr $TOTAL_MEMORY / 1048576`GB ($USED_MEMORY_PERCENTAGE%)
+	#CPU load: $CPULOAD
+	#Last boot: $LASTBOOT
 	#LVM use: yes
-	#Connexions TCP: $TCP ESTABLISHED
+	#TCP CONNECTIONS: $TCP ESTABLISHED
 	#User log: $ULOG
 	#Network: IP $IP ($MAC)
-	#Sudo: $CMD cmd"
-
-
-#*************************************************************************************
+	#sudo: $CMD cmd"
+***************************************************************************************************************************
