@@ -58,7 +58,7 @@ wall "
 	#CPU load: 0$CPULOAD
 	#Last boot: $LASTBOOT
 	#LVM use: yes
-	#TCP CONNECTIONS: $TCP ESTABLISHED
+	#CONNECTION TCP: $TCP ESTABLISHED
 	#User log: $ULOG
 	#Network: IP $IP ($MAC)
 	#sudo: $CMD cmd"
