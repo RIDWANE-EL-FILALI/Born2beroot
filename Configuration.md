@@ -62,7 +62,14 @@ There are three different techniques that SSH uses to encrypt:
   command used by the root user to send a message to all users currently connected to the server. If the system administrator wants to alert about a major server change that could cause users to log out, the root user could alert them with wall.
   
 # INSTALLATION
-  In my case,i've chosen Debian as my os of choice
+  In my case,i've chosen Debian as my os of choice for many reasons 
+  * debian supports a variation of architecture
+  * debian is easily upgradable to it's latest version
+  * debian is user friendly with a variation of GUI's (gnome, KDE, ...)
+  * debian has a huge amount of packages
+  now that's the answer you'll tell but the legit answer is that i am really just used to debian,
+  and telling that debian works with apt and rocky works with yum is just a poor argument because every os has it's advantages and disadvantages
+  but the main thing is that you find what suits you
   you can install it [here](https://www.debian.org/download)
   
 ## SUDO
