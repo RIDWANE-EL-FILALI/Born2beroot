@@ -71,7 +71,9 @@ There are three different techniques that SSH uses to encrypt:
 
   now that's the answer you'll tell but the legit answer is that i am really just used to debian,
   and telling that debian works with apt and rocky works with yum is just a poor argument because every os has it's advantages and disadvantages
-  but the main thing is that you find what suits you
+  but the main thing is that you find what suits you.
+  
+  
   you can install it [here](https://www.debian.org/download)
   
 ## SUDO
